@@ -23,17 +23,16 @@ const baseUrl = "https://platzi-avo.vercel.app";
         return formattedPrice;
     }
 
-//  window.fetch(url)
-//     //url fetched!
 
-//     .then((response) => response.json())
-//     //response (promise returned by fetch) parsed into JSON!
-    
-//     .then(responseJson => {
-//         responseJson.data.forEach(item => {
-//             console.log(item.name);
-//         });
-//     }); 
+const itemsContainer = document.querySelector('#app')
+itemsContainer.addEventListener('click', (event) => {
+    if (event.target.nodeName === 'H2'){
+        alert(event.target.innerText);
+    }
+})
+
+//TO-DO:
+// Render image of avocado with click
 
 //Now it's time to implement it with async/await
 
@@ -41,9 +40,11 @@ async function fetchData() {
     const response = await fetch(`${baseUrl}/api/avo`);
     const responseJson = await response.json();
     console.log(responseJson);
-    const itemsContainer = document.querySelector('#app')
+
+
     const allItems = []; 
     //all elements created will be inside JS memory in this array
+
     responseJson.data.forEach((item) => {
         //create node with image
         const image = document.createElement('img');
