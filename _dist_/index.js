@@ -7,6 +7,7 @@ const baseUrl = "https://platzi-avo.vercel.app";
 
  //this is the web API where we'll extract our data
 
+ 
  //now it's time to the server and 
  //1.fetch the API → 2.parse it into JSON → 3.display our data
 
@@ -22,26 +23,28 @@ const baseUrl = "https://platzi-avo.vercel.app";
         return formattedPrice;
     }
 
-//  window.fetch(url)
-//     //url fetched!
 
-//     .then((response) => response.json())
-//     //response (promise returned by fetch) parsed into JSON!
-    
-//     .then(responseJson => {
-//         responseJson.data.forEach(item => {
-//             console.log(item.name);
-//         });
-//     }); 
+const itemsContainer = document.querySelector('#app')
+itemsContainer.addEventListener('click', (event) => {
+    if (event.target.nodeName === 'H2'){
+        alert(event.target.innerText);
+    }
+})
+
+//TO-DO:
+// Render image of avocado with click
 
 //Now it's time to implement it with async/await
 
 async function fetchData() {
     const response = await fetch(`${baseUrl}/api/avo`);
     const responseJson = await response.json();
-    const itemsContainer = document.querySelector('#app')
+    console.log(responseJson);
+
+
     const allItems = []; 
     //all elements created will be inside JS memory in this array
+
     responseJson.data.forEach((item) => {
         //create node with image
         const image = document.createElement('img');
@@ -64,16 +67,29 @@ async function fetchData() {
         price.textContent = formatPrice(item.price);
         price.className = "text-gray-600";
 
+        const hardiness = document.createElement('p');
+        hardiness.textContent = `hardiness: ${item.attributes.hardiness}`;
+
+        const shape = document.createElement('p');
+        shape.textContent = item.attributes.shape;
+        
+        const taste = document.createElement('p');
+        taste.textContent = item.attributes.taste;
+
         //node with price and title inside
         const priceAndTitle = document.createElement("div");
         priceAndTitle.className = "text-center md:text-left";
         priceAndTitle.appendChild(title);
         priceAndTitle.appendChild(price);
 
+        const descriptionContainer = document.createElement('div');
+        descriptionContainer.append(taste, shape, hardiness);
+        descriptionContainer.classList.add('description--container')
+
         //container card
         const card = document.createElement('div');
-        card.className = "md:flex bg-white rounded-lg p-6 hover:bg-gray-300";
-        card.append(image, priceAndTitle);
+        card.className = "md:flex bg-white rounded-lg p-6 hover:bg-gray-300 card";
+        card.append(image, priceAndTitle, descriptionContainer);
         
 
         //Put everything inside main container 
